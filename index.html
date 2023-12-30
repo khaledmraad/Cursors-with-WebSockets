@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+    <button>SEN====D</button>
+    <script>
+      var sock = new WebSocket("ws://localhost:8888");
+      sock.onopen = function (event) {
+        alert("opened ,noice!!!!");
+        setTimeout(function () {
+          sock.send("hello");
+        }, 1000);
+      };
+      sock.onmessage = function (event) {
+        console.log(event);
+      };
+
+      document.querySelector("button").conclick = function () {
+        sock.send("hello");
+      };
+    </script>
+  </body>
+</html>
