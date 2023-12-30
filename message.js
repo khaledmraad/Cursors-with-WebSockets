@@ -7,7 +7,7 @@ s.on("connection", function (ws) {
     message = JSON.parse(message);
 
     if (message.type == "name") {
-      ws.personName = message.data.toString();
+      ws.personName = message.data;
       return;
     }
 
@@ -19,7 +19,7 @@ s.on("connection", function (ws) {
         client.send(
           JSON.stringify({
             name: ws.personName,
-            data: message.data.toString(),
+            data: message.data,
           }),
         );
       }
