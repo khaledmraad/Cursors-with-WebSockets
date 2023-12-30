@@ -6,21 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body>
+    <input type="text" name="" placeholder="type your message here" id="text" />
     <button>SEN====D</button>
+    <div id="conv"></div>
     <script>
       var sock = new WebSocket("ws://localhost:8888");
-      sock.onopen = function (event) {
-        alert("opened ,noice!!!!");
-        setTimeout(function () {
-          sock.send("hello");
-        }, 1000);
-      };
-      sock.onmessage = function (event) {
-        console.log(event);
+
+      var conv = document.getElementById("conv");
+
+      sock.onmessage = function (mess) {
+        console.log(mess);
+        conv.innerHTML += mess.data + "<br>";
       };
 
-      document.querySelector("button").conclick = function () {
-        sock.send("hello");
+      document.querySelector("button").onclick = function () {
+        var text = document.getElementById("text").value;
+        console.log(text);
+        sock.send(text);
+        conv.innerHTML += "youuu : " + text + "<br>";
       };
     </script>
   </body>
