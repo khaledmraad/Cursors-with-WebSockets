@@ -7,11 +7,12 @@ s.on("connection", function (ws) {
   var color = Math.floor(Math.random() * 360);
 
   var all_data = {};
-
+  var userName;
   ws.on("message", (messageString) => {
     messageString = JSON.parse(messageString);
     if (messageString.type == "name") {
       ws.personName = messageString.data;
+      userName = messageString.data.toString() + "";
       //btw name should be unique
       all_data[messageString.data] = [color, 0, 0];
       return;
@@ -30,11 +31,25 @@ s.on("connection", function (ws) {
     s.clients.forEach(function e(client) {
       all_data[ws.personName] = messageString.data;
 
-      client.send(JSON.stringify(all_data));
+      client.send(
+        JSON.stringify({
+          type: "cord_change",
+          data: all_data,
+        }),
+      );
     });
   });
 
   ws.on("close", function () {
+    s.clients.forEach(function e(client) {
+      client.send(
+        JSON.stringify({
+          type: "deleted",
+          data: userName,
+        }),
+      );
+    });
+
     console.log("press F for respect");
   });
 

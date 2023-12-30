@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
   </head>
   <body style="position: absolute; height: 100%; width: 100%">
-    <h1 id="cursor" style="position: absolute; top: 100px">jnslkdcjn</h1>
+    <h1 id="cursor" style="position: absolute; top: 100px">HELLO</h1>
 
     <script>
       var sock = new WebSocket("ws://localhost:8888");
@@ -23,14 +23,18 @@
       };
 
       sock.onmessage = function (mess) {
-        console.log(mess);
+        var parsed_mess = JSON.parse(mess.data);
+        //console.log(parsed_mess);
         var color;
-        var pmess = JSON.parse(mess.data);
+        if (parsed_mess.type == "deleted") {
+          document.getElementById(parsed_mess.data).remove();
+          return;
+        }
 
-        for (var [key, value] of Object.entries(pmess)) {
+        for (var [key, value] of Object.entries(parsed_mess.data)) {
           var pos =
             "position:absolute;top:" + value[1] + "px;left:" + value[0] + "px;";
-          console.log(key);
+
           if (document.getElementById(key) !== null) {
             document.getElementById(key).style = pos;
           } else {
