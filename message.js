@@ -29,7 +29,7 @@ s.on("connection", function (ws) {
   });
 
   ws.on("close", function () {
-    console.log("press F5 for respect");
+    console.log("press F for respect");
   });
 
   console.log("nvm his back");

@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body style="position: absolute; height: 100%; width: 100%">
+    <h1 id="cursor" style="position: absolute; top: 100px">jnslkdcjn</h1>
+
+    <script>
+      var sock = new WebSocket("ws://localhost:8888");
+
+      var name = prompt("enter you name pls");
+
+      sock.onopen = function () {
+        sock.send(
+          JSON.stringify({
+            type: "name",
+            data: name,
+          }),
+        );
+      };
+
+      sock.onmessage = function (mess) {
+        console.log(mess);
+        var color;
+        var pmess = JSON.parse(mess.data);
+
+        for (var [key, value] of Object.entries(pmess)) {
+          var pos =
+            "position:absolute;top:" + value[1] + "px;left:" + value[0] + "px;";
+          console.log(key);
+          if (document.getElementById(key) !== null) {
+            document.getElementById(key).style = pos;
+          } else {
+            var new_guy = document.createElement("h1");
+            var new_guy_name = document.createTextNode(key);
+            new_guy.appendChild(new_guy_name);
+            new_guy.id = key;
+            new_guy.style = pos;
+
+            document.body.appendChild(new_guy);
+          }
+        }
+      };
+
+      var curs = (document.body.onmousemove = function (e) {
+        var cord = [e.clientX, e.clientY];
+
+        sock.send(
+          JSON.stringify({
+            type: "coordinates",
+            data: cord,
+          }),
+        );
+      });
+    </script>
+  </body>
+</html>
