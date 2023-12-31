@@ -25,28 +25,30 @@
 
       sock.onmessage = function (mess) {
         var parsed_mess = JSON.parse(mess.data);
+        console.log(parsed_mess);
         //console.log(parsed_mess);
-        var color;
-        if (parsed_mess.type == "deleted") {
+
+        if (parsed_mess.type == "onatha_one") {
+          var userName = parsed_mess.data.name;
+          var color = parsed_mess.data.color;
+          console.log(color);
+          var new_guy = document.createElement("h1");
+          var new_guy_name = document.createTextNode(userName);
+          new_guy.appendChild(new_guy_name);
+          new_guy.id = userName;
+          new_guy.style.color = "#" + color.toString();
+
+          document.body.appendChild(new_guy);
+          return;
+        } else if (parsed_mess.type == "deleted") {
           document.getElementById(parsed_mess.data).remove();
           return;
         }
 
         for (var [key, value] of Object.entries(parsed_mess.data)) {
-          var pos =
-            "position:absolute;top:" + value[1] + "px;left:" + value[0] + "px;";
-
-          if (document.getElementById(key) !== null) {
-            document.getElementById(key).style = pos;
-          } else {
-            var new_guy = document.createElement("h1");
-            var new_guy_name = document.createTextNode(key);
-            new_guy.appendChild(new_guy_name);
-            new_guy.id = key;
-            new_guy.style = pos;
-
-            document.body.appendChild(new_guy);
-          }
+          document.getElementById(key).style.position = "absolute";
+          document.getElementById(key).style.top = value[1] + "px";
+          document.getElementById(key).style.left = value[0] + "px";
         }
       };
 

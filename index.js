@@ -4,8 +4,7 @@ var s = new server({ port: 8888 });
 
 var client_meta_data = new Map();
 s.on("connection", function (ws) {
-  var color = Math.floor(Math.random() * 360);
-
+  var randomColor = Math.floor(Math.random() * 16777215).toString(16);
   var all_data = {};
   var userName;
   ws.on("message", (messageString) => {
@@ -14,18 +13,30 @@ s.on("connection", function (ws) {
       ws.personName = messageString.data;
       userName = messageString.data.toString() + "";
       //btw name should be unique
-      all_data[messageString.data] = [color, 0, 0];
+      all_data[messageString.data] = [randomColor, 0, 0];
+
+      s.clients.forEach(function e(client) {
+        new_guy_data = {
+          name: ws.personName,
+          color: randomColor,
+        };
+        client.send(
+          JSON.stringify({
+            type: "onatha_one",
+            data: new_guy_data,
+          }),
+        );
+      });
+
       return;
     } else {
       var x, y;
-      console.log(messageString);
       x = messageString.data[0];
       y = messageString.data[1];
       all_data[ws.personName][1] = x;
       all_data[ws.personName][2] = y;
+      console.log(all_data);
     }
-
-    console.log(messageString);
 
     //coordinates broadcast
     s.clients.forEach(function e(client) {
