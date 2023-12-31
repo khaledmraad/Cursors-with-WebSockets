@@ -29,7 +29,7 @@ s.on("connection", function (ws) {
 
         client.send(
           JSON.stringify({
-            type: "onatha_one",
+            type: "anatha_one",
             data: new_guy_data,
           }),
         );
