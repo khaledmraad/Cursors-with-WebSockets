@@ -14,6 +14,8 @@ s.on("connection", function (ws) {
       userName = messageString.data.toString() + "";
       //btw name should be unique
       all_data[messageString.data] = [randomColor, 0, 0];
+      console.log(all_data);
+      console.log("noise");
 
       s.clients.forEach(function e(client) {
         new_guy_data = {
@@ -40,8 +42,6 @@ s.on("connection", function (ws) {
 
     //coordinates broadcast
     s.clients.forEach(function e(client) {
-      all_data[ws.personName] = messageString.data;
-
       client.send(
         JSON.stringify({
           type: "cord_change",

@@ -32,13 +32,7 @@
           var userName = parsed_mess.data.name;
           var color = parsed_mess.data.color;
           console.log(color);
-          var new_guy = document.createElement("h1");
-          var new_guy_name = document.createTextNode(userName);
-          new_guy.appendChild(new_guy_name);
-          new_guy.id = userName;
-          new_guy.style.color = "#" + color.toString();
-
-          document.body.appendChild(new_guy);
+          creatNewGuy(userName, color);
           return;
         } else if (parsed_mess.type == "deleted") {
           document.getElementById(parsed_mess.data).remove();
@@ -46,9 +40,12 @@
         }
 
         for (var [key, value] of Object.entries(parsed_mess.data)) {
+          if (document.getElementById(key) == null) {
+            creatNewGuy(key, value[0]);
+          }
           document.getElementById(key).style.position = "absolute";
-          document.getElementById(key).style.top = value[1] + "px";
-          document.getElementById(key).style.left = value[0] + "px";
+          document.getElementById(key).style.top = value[2] + "px";
+          document.getElementById(key).style.left = value[1] + "px";
         }
       };
 
@@ -62,6 +59,16 @@
           }),
         );
       });
+
+      function creatNewGuy(curName, curColor) {
+        var new_guy = document.createElement("h1");
+        var new_guy_name = document.createTextNode(curName);
+        new_guy.appendChild(new_guy_name);
+        new_guy.id = curName;
+        new_guy.style.color = "#" + curColor.toString();
+
+        document.body.appendChild(new_guy);
+      }
     </script>
   </body>
 </html>
