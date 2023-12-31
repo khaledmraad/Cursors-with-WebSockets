@@ -9,19 +9,24 @@ s.on("connection", function (ws) {
   var userName;
   ws.on("message", (messageString) => {
     messageString = JSON.parse(messageString);
+
     if (messageString.type == "name") {
       ws.personName = messageString.data;
+
       userName = messageString.data.toString() + "";
+
       //btw name should be unique
+      //
       all_data[messageString.data] = [randomColor, 0, 0];
+
       console.log(all_data);
-      console.log("noise");
 
       s.clients.forEach(function e(client) {
         new_guy_data = {
           name: ws.personName,
           color: randomColor,
         };
+
         client.send(
           JSON.stringify({
             type: "onatha_one",
@@ -33,10 +38,15 @@ s.on("connection", function (ws) {
       return;
     } else {
       var x, y;
+
       x = messageString.data[0];
+
       y = messageString.data[1];
+
       all_data[ws.personName][1] = x;
+
       all_data[ws.personName][2] = y;
+
       console.log(all_data);
     }
 

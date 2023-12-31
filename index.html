@@ -25,17 +25,24 @@
 
       sock.onmessage = function (mess) {
         var parsed_mess = JSON.parse(mess.data);
+
         console.log(parsed_mess);
-        //console.log(parsed_mess);
+
+        //console.log(garsed_mess);
 
         if (parsed_mess.type == "onatha_one") {
           var userName = parsed_mess.data.name;
+
           var color = parsed_mess.data.color;
+
           console.log(color);
+
           creatNewGuy(userName, color);
+
           return;
         } else if (parsed_mess.type == "deleted") {
           document.getElementById(parsed_mess.data).remove();
+
           return;
         }
 
@@ -43,9 +50,8 @@
           if (document.getElementById(key) == null) {
             creatNewGuy(key, value[0]);
           }
-          document.getElementById(key).style.position = "absolute";
-          document.getElementById(key).style.top = value[2] + "px";
-          document.getElementById(key).style.left = value[1] + "px";
+
+          updatePos(key, value[1], value[2]);
         }
       };
 
@@ -62,12 +68,24 @@
 
       function creatNewGuy(curName, curColor) {
         var new_guy = document.createElement("h1");
+
         var new_guy_name = document.createTextNode(curName);
+
         new_guy.appendChild(new_guy_name);
+
         new_guy.id = curName;
+
         new_guy.style.color = "#" + curColor.toString();
 
         document.body.appendChild(new_guy);
+      }
+
+      function updatePos(curName, posX, posY) {
+        document.getElementById(curName).style.position = "absolute";
+
+        document.getElementById(curName).style.top = posY + "px";
+
+        document.getElementById(curName).style.left = posX + "px";
       }
     </script>
   </body>
